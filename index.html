@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title id="siteDocTitle">LÊ NGUYỄN VŨ - Hệ Thống Tài Khoản Số 24/7</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #090d16; color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Header */
+        header { background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(8px); border-bottom: 1px solid #1e293b; padding: 12px 16px; position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-box { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #06b6d4, #2563eb); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3); }
+        .brand-name { font-size: 15px; font-weight: 800; color: #38bdf8; }
+        .brand-sub { font-size: 11px; color: #94a3b8; }
+        .header-actions { display: flex; gap: 8px; }
+        .btn-header { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; padding: 7px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; position: relative; transition: 0.15s; }
+        .btn-header:hover { border-color: #38bdf8; color: #fff; }
+        .cart-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: #fff; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        /* Container */
+        .container { max-width: 1120px; margin: 0 auto; padding: 14px; flex-grow: 1; width: 100%; }
+
+        /* Notice Box */
+        .notice-box { background: linear-gradient(145deg, #131c2e, #0f172a); border: 1px solid #1e293b; border-left: 4px solid #38bdf8; border-radius: 14px; padding: 14px; margin-bottom: 16px; font-size: 12px; line-height: 1.65; color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .notice-title { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+        .notice-highlight { color: #facc15; font-weight: 600; }
+
+        /* Search & Category Tabs */
+        .search-box { width: 100%; background: #131c2e; border: 1px solid #334155; border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 13px; margin-bottom: 12px; outline: none; }
+        .search-box:focus { border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+        
+        .cat-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 14px; scrollbar-width: none; }
+        .cat-tabs::-webkit-scrollbar { display: none; }
+        .cat-btn { background: #131c2e; border: 1px solid #1e293b; color: #94a3b8; padding: 7px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: 0.2s; }
+        .cat-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; }
+
+        /* Product Grid */
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media(min-width: 600px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media(min-width: 900px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
+
+        .prod-card { background: #151e2f; border: 1px solid #23304a; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.15s ease; position: relative; }
+        .prod-card:hover { border-color: #38bdf8; transform: translateY(-2px); background: #1a253a; }
+        .prod-card:active { transform: scale(0.98); }
+        .prod-card.out-of-stock { opacity: 0.55; filter: grayscale(50%); }
+
+        .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .prod-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px; color: #fff; flex-shrink: 0; position: relative; overflow: hidden; background: #1e293b; border: 1px solid rgba(255,255,255,0.12); }
+        .prod-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .prod-info { overflow: hidden; }
+        .prod-name { font-size: 13px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .prod-pkg-count { font-size: 10.5px; color: #94a3b8; margin-top: 2px; }
+
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; padding-top: 8px; }
+        .prod-price { font-size: 12px; font-weight: 800; color: #38bdf8; }
+        .badge-stock { font-size: 9.5px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .badge-out { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+        /* Modals */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 50; display: none; align-items: center; justify-content: center; padding: 12px; backdrop-filter: blur(5px); }
+        .modal.active { display: flex; }
+        .modal-body { background: #0f172a; border: 1px solid #334155; border-radius: 18px; width: 100%; max-width: 500px; max-height: 92vh; overflow-y: auto; padding: 18px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        .modal-close { position: absolute; top: 14px; right: 14px; background: #1e293b; border: none; color: #cbd5e1; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        /* Sub-package List */
+        .pkg-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+        .pkg-btn { background: #162032; border: 1.5px solid #26354f; border-radius: 10px; padding: 10px 12px; text-align: left; cursor: pointer; transition: 0.15s; display: flex; flex-direction: column; gap: 4px; }
+        .pkg-btn:hover { border-color: #475569; }
+        .pkg-btn.selected { border-color: #38bdf8; background: rgba(14, 165, 233, 0.12); box-shadow: 0 0 0 1px #38bdf8; }
+        .pkg-btn.pkg-out { opacity: 0.55; }
+        .pkg-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+        .pkg-title { font-size: 12px; font-weight: 700; color: #f8fafc; line-height: 1.35; }
+        .pkg-price-tag { font-size: 12px; font-weight: 800; color: #facc15; white-space: nowrap; }
+        .pkg-meta { display: flex; gap: 10px; font-size: 10.5px; color: #94a3b8; }
+
+        /* Package Detail Quote Box */
+        .pkg-detail-box { background: #111c2d; border-left: 3px solid #06b6d4; border-radius: 8px; padding: 12px; margin-bottom: 14px; font-size: 12px; line-height: 1.55; color: #e2e8f0; }
+        .pkg-stats-bar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #26354f; font-size: 11px; }
+        .stat-pill { display: flex; align-items: center; gap: 4px; font-weight: 700; }
+        .pkg-desc-content { white-space: pre-line; color: #cbd5e1; font-size: 11.5px; }
+
+        /* Quantity & Buttons */
+        .qty-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; background: #162032; padding: 8px 12px; border-radius: 10px; }
+        .qty-controls { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { width: 30px; height: 30px; background: #1e293b; border: 1px solid #334155; color: #fff; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .btn-confirm { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; border: none; width: 100%; padding: 11px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.15s; }
+        .btn-confirm:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
+
+        .form-input { width: 100%; background: #090d16; border: 1px solid #334155; border-radius: 8px; padding: 9px 11px; color: #fff; font-size: 12px; margin-bottom: 8px; outline: none; }
+        .form-input:focus { border-color: #38bdf8; }
+
+        /* Floating Zalo */
+        .zalo-float { position: fixed; bottom: 18px; right: 18px; z-index: 45; background: #0068ff; color: #fff; border-radius: 50px; padding: 9px 15px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 104, 255, 0.4); cursor: pointer; border: none; }
+        .zalo-icon-badge { width: 20px; height: 20px; border-radius: 50%; background: #fff; color: #0068ff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; }
+
+        /* Admin Styles */
+        .admin-sec-title { font-size: 12px; font-weight: 800; color: #38bdf8; margin: 14px 0 8px 0; text-transform: uppercase; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
+        .admin-card { background: #090d16; border: 1px solid #1e293b; border-radius: 10px; padding: 10px; margin-bottom: 10px; font-size: 11px; }
+        .subpkg-edit-row { background: #131c2e; border: 1px solid #26354f; border-radius: 8px; padding: 8px; margin-top: 6px; }
+        .pass-wrap { position: relative; margin-bottom: 10px; }
+        .pass-wrap input { margin-bottom: 0; padding-right: 38px; }
+        .pass-toggle { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 14px; }
+
+        footer { background: #0f172a; border-top: 1px solid #1e293b; text-align: center; padding: 16px; font-size: 11px; color: #64748b; margin-top: 24px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-area">
+            <div class="logo-box">V</div>
+            <div>
+                <div class="brand-name" id="dispBrandName">LÊ NGUYỄN VŨ</div>
+                <div class="brand-sub">Hệ Thống Tài Khoản Số 24/7</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-header" onclick="openCart()">
+                🛒 Giỏ hàng
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+            <button class="btn-header" onclick="openAdminLogin()">⚙️ Quản trị</button>
+        </div>
+    </header>
+
+    <!-- Floating Zalo -->
+    <button class="zalo-float" onclick="openZaloModal()">
+        <span class="zalo-icon-badge">Z</span>
+        <span>Hỗ trợ Zalo</span>
+    </button>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Bảng Thông Báo & Quy Định Bảo Hành -->
+        <div class="notice-box">
+            <div class="notice-title">👋 Chào mừng bạn đến với <span id="dispWelcomeName" style="color:#38bdf8;">Lê Nguyễn Vũ Store</span></div>
+            <div>🤖 <b>Mua hàng 24/7:</b> Chọn ứng dụng ➔ Chọn gói phù hợp ➔ Quét QR Thanh toán ➔ Nhận tài khoản ngay.</div>
+            <div>⚠️ <span class="notice-highlight">Lưu ý:</span> Đọc kỹ thông tin mô tả của từng gói trước khi mua.</div>
+            <div>💸 <b>Chính sách Bảo hành:</b> Bảo hành đúng theo thời hạn từng gói (BHF = Bảo hành Full thời gian). Đổi mới hoặc hoàn tiền nếu phát sinh lỗi từ hệ thống.</div>
+            <div>🛠️ <b>Hỗ trợ kỹ thuật:</b> Gặp lỗi vui lòng gửi <b>Mã đơn + Ảnh lỗi</b> qua Zalo: <b id="dispPhoneNotice" style="color:#38bdf8; cursor:pointer;" onclick="openZaloModal()">0859 296 648</b></div>
+        </div>
+
+        <!-- Thanh tìm kiếm -->
+        <input type="text" class="search-box" id="searchBox" placeholder="🔍 Tìm kiếm nhanh trong 60+ ứng dụng (CapCut, ChatGPT, Veo3, Canva, Netflix...)" oninput="renderProducts()">
+
+        <!-- Bộ lọc Danh mục -->
+        <div class="cat-tabs" id="catTabs">
+            <button class="cat-btn active" onclick="setCat('all', this)">🔥 Tất cả (60+)</button>
+            <button class="cat-btn" onclick="setCat('ai', this)">🤖 Công cụ AI & Code</button>
+            <button class="cat-btn" onclick="setCat('design', this)">🎨 Thiết kế & Video</button>
+            <button class="cat-btn" onclick="setCat('ent', this)">🎬 Giải trí & Phim Nhạc</button>
+            <button class="cat-btn" onclick="setCat('work', this)">📚 Học tập & Công việc</button>
+            <button class="cat-btn" onclick="setCat('vpn', this)">🛡️ VPN & Công cụ khác</button>
+        </div>
+
+        <!-- Lưới Sản Phẩm -->
+        <div class="product-grid" id="productGrid"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <b id="dispFooterBrand">LÊ NGUYỄN VŨ DIGITAL SERVICES</b> - UY TÍN - BẢO HÀNH TRỌN GÓI<br>
+        Hotline/Zalo: <span id="dispFooterPhone">0859 296 648</span> | Telegram nhận đơn: @shopvu_bot | Ngân hàng: <span id="dispFooterBank">MB - 19396806102005</span>
+    </footer>
+
+    <!-- MODAL 1: Chi tiết ứng dụng & Chọn Gói Con -->
+    <div class="modal" id="prodModal">
+        <div class="modal-body">
+            <button class="modal-close" onclick="closeModal('prodModal')">&times;</button>
+            
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                <div class="prod-icon" id="modalProdIcon" style="width: 46px; height: 46px; font-size: 20px;"></div>
+                <div>
+                    <div id="modalProdName" style="font-size: 17px; font-weight: 800; color: #fff;">Tên Ứng Dụng</div>
+                    <div style="font-size: 11px; color: #38bdf8;">👇 Bấm chọn từng gói bên dưới để xem giá & mô tả riêng:</div>
+                </div>
+            </div>
+
+            <!-- Danh sách các gói con trong ứng dụng -->
+            <div class="pkg-list" id="modalPkgList"></div>
+
+            <!-- Khung chi tiết của gói đang chọn -->
+            <div class="pkg-detail-box" id="pkgDetailBox">
+                <div class="pkg-stats-bar">
+                    <div class="stat-pill" style="color: #4ade80;">💵 Giá: <span id="detPrice">0đ</span></div>
+                    <div class="stat-pill" style="color: #38bdf8;">📦 Tồn kho: <span id="detStock">0</span></div>
+                    <div class="stat-pill" style="color: #c084fc;">📊 Đã bán: <span id="detSold">0</span></div>
+                </div>
+                <div style="font-weight: 700; color: #38bdf8; margin-bottom: 4px; font-size: 11.5px;">💬 Mô tả chi tiết của gói này:</div>
+                <div class="pkg-desc-content" id="detDesc"></div>
+            </div>
+
+            <!-- Chọn số lượng -->
+            <div class="qty-row">
+                <span style="font-size: 12px; font-weight: 600; color: #cbd5e1;">Số lượng mua:</span>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQty(-1)">-</button>
+                    <span id="qtyVal" style="font-size: 14px; font-weight: 800; width: 26px; text-align: center;">1</span>
+                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+            </div>
+
+            <button class="btn-confirm" id="btnAddCartModal" onclick="addSelectedPkgToCart()">Thêm Vào Giỏ Hàng</button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Giỏ hàng -->
+    <div class="modal" id="cartModal">
+        <div class="modal-body">
+            <button class="modal-close" onclick="closeModal('cartModal')">&times;</button>
+            <div class="modal-title">🛒 Giỏ Hàng Của Bạn</div>
+            <div id="cartItems" style="margin-bottom: 12px; max-height: 200px; overflow-y: auto;"></div>
+            
+            <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 14px; margin-bottom: 14px; padding-top: 8px; border-top: 1px solid #1e293b;">
+                <span>Tổng thanh toán:</span>
+                <span id="cartTotal" style="color: #4ade80;">0 đ</span>
+            </div>
+
+            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px;">Thông tin nhận tài khoản:</div>
+            <input type="text" class="form-input" id="cusName" placeholder="Nhập họ tên của bạn...">
+            <input type="text" class="form-input" id="cusPhone" placeholder="Số điện thoại Zalo / Telegram nhận tài khoản...">
+            <input type="text" class="form-input" id="cusNote" placeholder="Ghi chú thêm (Email cần nâng cấp nếu mua gói chính chủ)...">
+
+            <button class="btn-confirm" onclick="goPayment()">Tiến Hành Quét Mã QR Thanh Toán</button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Thanh toán VietQR & Màn hình hoàn tất (Không ép nhảy app) -->
+    <div class="modal" id="payModal">
+        <div class="modal-body" style="text-align: center;">
+            <button class="modal-close" onclick="closeModal('payModal')">&times;</button>
+            
+            <!-- Trạng thái 1: Quét mã QR thanh toán -->
+            <div id="payStepQr">
+                <div class="modal-title">💳 Quét Mã QR Thanh Toán</div>
+                <p style="font-size: 11.5px; color: #cbd5e1; margin-bottom: 10px;">
+                    Ngân hàng <b id="payBankName" style="color:#38bdf8;">MB</b> - STK: <b id="payAccountNo" style="color:#fff;">19396806102005</b><br>
+                    Chủ TK: <b id="payAccountOwner" style="color:#facc15;">LE NGUYEN VU</b>
+                </p>
+                
+                <div style="background: #fff; padding: 10px; border-radius: 14px; display: inline-block; margin-bottom: 10px;">
+                    <img id="qrImg" src="" style="width: 190px; height: 190px; display: block; object-fit: contain;">
+                </div>
+
+                <div style="background: #090d16; border: 1px solid #1e293b; border-radius: 10px; padding: 10px; text-align: left; font-size: 11.5px; margin-bottom: 12px; line-height: 1.6;">
+                    <div>📦 Mã đơn hàng: <b id="payCode" style="color: #38bdf8;"></b></div>
+                    <div>💰 Số tiền: <b id="payAmount" style="color: #4ade80;"></b> (Tự động điền đúng số tiền)</div>
+                    <div>📝 Nội dung CK: <b id="paySyntax" style="color: #facc15;"></b></div>
+                </div>
+
+                <button class="btn-confirm" style="background: #16a34a;" onclick="finishPayment()">✅ Tôi Đã Chuyển Khoản Xong</button>
+            </div>
+
+            <!-- Trạng thái 2: Xác nhận thành công & Tùy chọn Nhắn Zalo -->
+            <div id="payStepSuccess" style="display: none; padding: 10px 0;">
+                <div style="font-size: 40px; margin-bottom: 10px;">🎉</div>
+                <div class="modal-title" style="color: #4ade80; margin-bottom: 6px;">ĐẶT HÀNG THÀNH CÔNG!</div>
+                <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 14px;">
+                    Mã đơn: <b id="successCode" style="color:#38bdf8;"></b><br>
+                    Hệ thống đã gửi thông tin đơn hàng về máy Admin. Shop sẽ kiểm tra và gửi tài khoản qua số <b><span id="successPhone" style="color:#facc15;"></span></b> trong ít phút!
+                </p>
+
+                <!-- Nút tùy chọn Zalo (Nhanh gọn, không bắt buộc) -->
+                <a id="btnDirectZalo" href="#" target="_blank" class="btn-confirm" style="display: block; text-decoration: none; background: #0068ff; margin-bottom: 8px; padding: 11px;">
+                    💬 Nhắn Zalo Shop Lấy Tài Khoản Ngay
+                </a>
+                
+                <button class="btn-confirm" style="background: #334155; padding: 8px; font-size: 12px;" onclick="closeModal('payModal')">
+                    Đóng (Tôi sẽ chờ Shop liên hệ)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: Zalo QR -->
+    <div class="modal" id="zaloModal">
+        <div class="modal-body" style="text-align: center;">
+            <button class="modal-close" onclick="closeModal('zaloModal')">&times;</button>
+            <div class="modal-title">Liên Hệ Zalo Chính Chủ</div>
+            <div style="background: #fff; padding: 10px; border-radius: 14px; display: inline-block; margin-bottom: 10px;">
+                <img id="zaloQrImg" src="" style="width: 190px; height: 190px; display: block; object-fit: contain;">
+            </div>
+            <p style="font-size: 13px; font-weight: bold; color: #38bdf8; margin-bottom: 4px;" id="dispZaloName">Lê Nguyên Vũ</p>
+            <p style="font-size: 11.5px; color: #94a3b8; margin-bottom: 12px;" id="dispZaloPhone">SĐT/Zalo: 0859 296 648</p>
+            <a id="zaloLinkBtn" href="#" target="_blank" class="btn-confirm" style="display: block; text-decoration: none;">Mở Zalo Nhắn Tin Ngay</a>
+        </div>
+    </div>
+
+    <!-- MODAL 5: Đăng nhập Quản trị -->
+    <div class="modal" id="loginAdminModal">
+        <div class="modal-body" style="max-width: 360px;">
+            <button class="modal-close" onclick="closeModal('loginAdminModal')">&times;</button>
+            <div class="modal-title">🔐 Đăng Nhập Quản Trị</div>
+            <div class="pass-wrap">
+                <input type="password" class="form-input" id="adminPassInput" placeholder="••••••••" onkeydown="if(event.key==='Enter') verifyAdminPass()">
+                <button type="button" class="pass-toggle" onclick="togglePassVisibility()" title="Hiện/Ẩn mật khẩu">👁️</button>
+            </div>
+            <button class="btn-confirm" onclick="verifyAdminPass()">Đăng Nhập</button>
+        </div>
+    </div>
+
+    <!-- MODAL 6: Bảng Quản Trị Chuyên Sâu -->
+    <div class="modal" id="adminDashboardModal">
+        <div class="modal-body" style="max-width: 660px;">
+            <button class="modal-close" onclick="closeModal('adminDashboardModal')">&times;</button>
+            <div class="modal-title">⚙️ Quản Trị Hệ Thống Toàn Diện</div>
+
+            <div style="background: rgba(14, 165, 233, 0.15); border: 1px solid #0284c7; padding: 10px; border-radius: 10px; font-size: 11px; margin-bottom: 12px;">
+                💡 <b>Mẹo đồng bộ Web:</b> Sau khi bạn chỉnh sửa giá, thêm gói hoặc đổi trạng thái hết hàng xong, hãy bấm nút <b>"📥 Tải File index.html Đã Lưu"</b> để lấy file mới nhất up lên host, đảm bảo mọi khách hàng đều thấy đúng bản cập nhật của bạn!
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                    <button class="btn-confirm" style="padding: 7px; background: #059669;" onclick="exportUpdatedHtmlFile()">📥 Tải File index.html Đã Lưu</button>
+                    <button class="btn-confirm" style="padding: 7px; background: #475569; width: 45%;" onclick="resetDefaultData()">🔄 Khôi phục gốc</button>
+                </div>
+            </div>
+
+            <!-- Cài đặt tài khoản & Mật khẩu -->
+            <div class="admin-sec-title">1. Đổi Mật Khẩu & Thông Tin Ngân Hàng / Zalo</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                <input type="password" class="form-input" id="newAdminPass" placeholder="Mật khẩu Admin mới (Bỏ trống nếu giữ nguyên)">
+                <input type="text" class="form-input" id="cfgBrandName" placeholder="Tên Shop (LÊ NGUYỄN VŨ)">
+                <input type="text" class="form-input" id="cfgBankCode" placeholder="Mã Ngân hàng (MB, VCB, ACB...)">
+                <input type="text" class="form-input" id="cfgAccountNo" placeholder="Số tài khoản nhận tiền">
+                <input type="text" class="form-input" id="cfgAccountOwner" placeholder="Chủ tài khoản">
+                <input type="text" class="form-input" id="cfgPhone" placeholder="Số ĐT / Zalo">
+            </div>
+            <input type="text" class="form-input" id="cfgZaloQrUrl" placeholder="Link ảnh QR Zalo">
+            <button class="btn-confirm" style="padding: 7px; margin-bottom: 10px;" onclick="saveShopSettings()">💾 Lưu Cấu Hình Chung</button>
+
+            <!-- Thêm Ứng Dụng Mới -->
+            <div class="admin-sec-title">2. Thêm Ứng Dụng Mới Vào Danh Mục</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                <input type="text" class="form-input" id="newAppName" placeholder="Tên ứng dụng (VD: Midjourney)">
+                <select class="form-input" id="newAppCat">
+                    <option value="ai">🤖 Công cụ AI & Code</option>
+                    <option value="design">🎨 Thiết kế & Video</option>
+                    <option value="ent">🎬 Giải trí & Phim Nhạc</option>
+                    <option value="work">📚 Học tập & Công việc</option>
+                    <option value="vpn">🛡️ VPN & Công cụ khác</option>
+                </select>
+            </div>
+            <input type="text" class="form-input" id="newAppDomain" placeholder="Tên miền lấy logo tự động (VD: midjourney.com) hoặc dán link ảnh">
+            <button class="btn-confirm" style="padding: 7px; background: #0d9488; margin-bottom: 10px;" onclick="addNewApplication()">+ Tạo Ứng Dụng Mới</button>
+
+            <!-- Quản lý từng ứng dụng & các gói con bên trong -->
+            <div class="admin-sec-title">3. Chỉnh Sửa Gói Con, Giá, Mô Tả & Tồn Kho Từng Ứng Dụng</div>
+            <input type="text" class="form-input" id="adminSearchApp" placeholder="🔍 Tìm nhanh ứng dụng cần sửa (VD: CapCut, ChatGPT...)" oninput="renderAdminApps()">
+            <div id="adminAppList" style="max-height: 320px; overflow-y: auto; padding-right: 4px;"></div>
+        </div>
+    </div>
+
+    <script id="appDataScript">
+        window.DEFAULT_ADMIN_PASS = "123456";
+        window.DEFAULT_SHOP_CONFIG = {
+            brandName: "LÊ NGUYỄN VŨ",
+            phone: "0859 296 648",
+            bankCode: "MB",
+            accountNo: "19396806102005",
+            accountOwner: "LE NGUYEN VU",
+            zaloQrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://zalo.me/0859296648"
+        };
+
+        function stdDesc(title, time, note) {
+            return `✨ ${title} | BHF\n📌 THÔNG TIN:\n• Thời hạn sử dụng: ${time}.\n• ${note}\n🛡️ BẢO HÀNH:\n• Bảo hành Full thời gian (${time}) 1 đổi 1 nếu lỗi.\n⚠️ LƯU Ý:\n• Không thay đổi thông tin bảo mật đối với tài khoản dùng chung/cấp sẵn.\n• Vui lòng kiểm tra tài khoản ngay sau khi nhận hàng.`;
+        }
+
+        window.DEFAULT_PRODUCTS = [
+            {
+                id: "capcut", name: "CapCut", cat: "design", domain: "capcut.com", color: "#000000",
+                packages: [
+                    { name: "[Slot] CapCut Pro Team Mail Chính Chủ 1 Tháng - BHF", price: 60000, stock: 45, sold: 120, desc: "✨ CAPCUT PRO TEAM NÂNG CẤP MAIL CHÍNH CHỦ | BHF\n📌 THÔNG TIN:\n• Nâng cấp trực tiếp trên Email/Tài khoản CapCut cá nhân của bạn.\n• Thời hạn 30 ngày, mở khóa toàn bộ tính năng Pro, hiệu ứng, xuất 4K.\n• Riêng tư tuyệt đối, dùng trên cả Điện thoại & Máy tính.\n🛡️ BẢO HÀNH:\n• Bảo hành Full 30 ngày." },
+                    { name: "CAPCUT PRO CÁ NHÂN 30D BHF", price: 40000, stock: 78, sold: 74, desc: "✨ CAPCUT PRO – 30 NGÀY | BHF\n📌 THÔNG TIN:\n• Tài khoản CapCut Pro cấp sẵn, thời hạn 30 ngày.\n• Có thể nhận tới 2.000 AI Credits.\n• Định dạng: Email | Pass.\n• Khuyến nghị chỉ đăng nhập 1–2 thiết bị, hạn chế đăng nhập nhiều thiết bị.\n🛡️ BẢO HÀNH:\n• Bảo hành 30 ngày. Hỗ trợ bảo hành 1 lần đối với lỗi đăng nhập do đăng nhập quá thường xuyên.\n⚠️ LƯU Ý:\n• Hạn chế đăng nhập/đăng xuất liên tục hoặc trên quá nhiều thiết bị.\n• Vui lòng kiểm tra tài khoản ngay sau khi nhận hàng." },
+                    { name: "CAPCUT PRO CÁ NHÂN 30 Ngày BHF (Lô 2)", price: 40000, stock: 22, sold: 51, desc: "✨ CAPCUT PRO CÁ NHÂN 30 NGÀY | BHF\n📌 THÔNG TIN:\n• Tài khoản cấp sẵn dùng riêng ổn định.\n• Mở khóa toàn bộ mẫu, chữ, âm thanh Pro không dính logo.\n🛡️ BẢO HÀNH: Full 30 ngày." },
+                    { name: "CapCut Pro Chính Chủ 1 Năm - BHF", price: 290000, stock: 15, sold: 39, desc: stdDesc("CAPCUT PRO 1 NĂM", "12 Tháng", "Sử dụng ổn định lâu dài, đầy đủ tính năng AI & Cloud.") }
+                ]
+            },
+            {
+                id: "chatgpt", name: "ChatGPT", cat: "ai", domain: "openai.com", color: "#10a37f",
+                packages: [
+                    { name: "[Slot] ChatGPT Plus 1 Tháng (Dùng Chung Ổn Định) - BHF", price: 65000, stock: 50, sold: 210, desc: stdDesc("CHATGPT PLUS DÙNG CHUNG", "30 Ngày", "Sử dụng mô hình GPT-4o, o1, tạo ảnh DALL-E, phân tích file.") },
+                    { name: "ChatGPT Plus Tài Khoản Riêng 1 Tháng - BHF", price: 185000, stock: 18, sold: 85, desc: stdDesc("CHATGPT PLUS CÁ NHÂN RIÊNG BIỆT", "30 Ngày", "Tài khoản dùng riêng 1 mình hoặc nâng chính chủ, bảo mật lịch sử chat 100%.") },
+                    { name: "ChatGPT Pro (Gói Cao Cấp Nhất) 1 Tháng", price: 450000, stock: 5, sold: 12, desc: stdDesc("CHATGPT PRO UNLIMITED", "30 Ngày", "Truy cập không giới hạn mô hình o1-pro và toàn bộ tính năng mạnh nhất của OpenAI.") }
+                ]
+            },
+            {
+                id: "canva", name: "Canva", cat: "design", domain: "canva.com", color: "#7d2ae8",
+                packages: [
+                    { name: "Canva Pro Nâng Cấp Mail Chính Chủ 1 Tháng - BHF", price: 25000, stock: 120, sold: 340, desc: stdDesc("CANVA PRO CHÍNH CHỦ", "30 Ngày", "Nâng cấp trực tiếp qua email của bạn, mở khóa toàn bộ kho mẫu, xóa nền, Magic Studio.") },
+                    { name: "Canva Pro Nâng Cấp Mail Chính Chủ 1 Năm - BHF", price: 149000, stock: 85, sold: 410, desc: stdDesc("CANVA PRO 1 NĂM CHÍNH CHỦ", "365 Ngày", "Sử dụng trọn 1 năm trên mail chính chủ, bảo hành suốt thời gian sử dụng.") },
+                    { name: "Canva Edu Pro Vĩnh Viễn (Bảo hành 1 năm)", price: 69000, stock: 60, sold: 195, desc: stdDesc("CANVA EDU PRO", "1 Năm BHF", "Mở khóa đầy đủ tính năng thiết kế Pro, kho font chữ và tài nguyên giáo dục.") }
+                ]
+            },
+            {
+                id: "claude", name: "Claude", cat: "ai", domain: "claude.ai", color: "#d97757",
+                packages: [
+                    { name: "[Slot] Claude 3.5 Sonnet Pro Dùng Chung 30D - BHF", price: 69000, stock: 34, sold: 98, desc: stdDesc("CLAUDE PRO DÙNG CHUNG", "30 Ngày", "Siêu AI lập trình & viết nội dung mượt mà nhất hiện nay.") },
+                    { name: "Claude Pro Tài Khoản Riêng 30 Ngày - BHF", price: 220000, stock: 12, sold: 44, desc: stdDesc("CLAUDE PRO PRIVATE", "30 Ngày", "Cấp tài khoản riêng Email | Pass, full lượt giới hạn tin nhắn.") }
+                ]
+            },
+            {
+                id: "grok", name: "Grok", cat: "ai", domain: "x.ai", color: "#111111",
+                packages: [
+                    { name: "SuperGrok / X Premium AI 30 Ngày - BHF", price: 79000, stock: 25, sold: 40, desc: stdDesc("GROK AI PRO", "30 Ngày", "Trải nghiệm Grok-3 mới nhất, không bộ lọc khắt khe, tạo ảnh chân thực.") }
+                ]
+            },
+            {
+                id: "apigpt", name: "API-GPT", cat: "ai", domain: "platform.openai.com", color: "#202123",
+                packages: [
+                    { name: "Key API OpenAI Có Sẵn 5$ Credit", price: 85000, stock: 40, sold: 112, desc: stdDesc("API-GPT KEY 5$", "Theo dung lượng", "Cấp Key sk-... tích hợp vào tool, n8n, dịch thuật, automation.") },
+                    { name: "Key API OpenAI Có Sẵn 20$ Credit", price: 290000, stock: 15, sold: 38, desc: stdDesc("API-GPT KEY 20$", "Theo dung lượng", "Tốc độ Tier cao, gọi GPT-4o và nhúng vào phần mềm ổn định.") }
+                ]
+            },
+            {
+                id: "veo3", name: "Veo3 Ultra + AI", cat: "ai", domain: "deepmind.google", color: "#4285f4",
+                packages: [
+                    { name: "Tài Khoản Google AI Ultra (Tạo Video Veo 3 + Imagen 3) 30D", price: 120000, stock: 19, sold: 67, desc: stdDesc("VEO 3 ULTRA VIDEO AI", "30 Ngày", "Tạo video điện ảnh siêu thực bằng mô hình Veo 3 mới nhất của Google.") }
+                ]
+            },
+            {
+                id: "geminipro", name: "Gemini PRO", cat: "ai", domain: "gemini.google.com", color: "#1a73e8",
+                packages: [
+                    { name: "Gemini Advanced 1.5 Pro + 2TB Google One (1 Tháng)", price: 45000, stock: 65, sold: 180, desc: stdDesc("GEMINI ADVANCED PRO", "30 Ngày", "Kèm 2TB dung lượng Drive/Photos, tích hợp AI trong Docs, Gmail.") },
+                    { name: "Gemini Advanced Chính Chủ 6 Tháng - BHF", price: 199000, stock: 30, sold: 55, desc: stdDesc("GEMINI ADVANCED 6 THÁNG", "180 Ngày", "Nâng cấp chính chủ không lo mất dữ liệu.") }
+                ]
+            },
+            {
+                id: "brainfm", name: "Brain.fm", cat: "work", domain: "brain.fm", color: "#6366f1",
+                packages: [
+                    { name: "Brain.fm Pro 1 Tháng (Nhạc Sóng Não Tập Trung/Ngủ Ngon)", price: 35000, stock: 40, sold: 29, desc: stdDesc("BRAIN.FM PRO", "30 Ngày", "Âm nhạc khoa học giúp tập trung học tập, làm việc sâu và ngủ ngon.") }
+                ]
+            },
+            {
+                id: "adobe", name: "Adobe", cat: "design", domain: "adobe.com", color: "#ff0000",
+                packages: [
+                    { name: "Adobe All Apps (Full 20+ App Bản Quyền + 100GB Cloud) 1 Tháng", price: 135000, stock: 28, sold: 95, desc: stdDesc("ADOBE CREATIVE CLOUD FULL APPS", "30 Ngày", "Sử dụng Photoshop, Illustrator, Premiere, After Effects + Generative Fill AI.") },
+                    { name: "Adobe All Apps Nâng Cấp Chính Chủ 1 Năm - BHF", price: 950000, stock: 10, sold: 32, desc: stdDesc("ADOBE FULL APPS 1 NĂM", "365 Ngày", "Kích hoạt trực tiếp trên email cá nhân, ổn định tuyệt đối.") }
+                ]
+            },
+            {
+                id: "akool", name: "Akool", cat: "ai", domain: "akool.com", color: "#8b5cf6",
+                packages: [
+                    { name: "Akool AI Pro (Face Swap, Avatar, Dịch Video AI) 30D", price: 89000, stock: 20, sold: 34, desc: stdDesc("AKOOL AI PRO", "30 Ngày", "Chuyên gia ghép mặt video, tạo nhân vật ảo nói chuyện chuẩn khẩu hình.") }
+                ]
+            },
+            {
+                id: "coursera", name: "Coursera", cat: "work", domain: "coursera.org", color: "#0056d2",
+                packages: [
+                    { name: "Coursera Plus Nâng Cấp Chính Chủ (Cấp Chứng Chỉ Quốc Tế) 6 Tháng", price: 220000, stock: 35, sold: 88, desc: stdDesc("COURSERA PLUS", "6 Tháng", "Học hơn 7,000 khóa học từ Google, IBM, Meta và nhận chứng chỉ tên bạn.") }
+                ]
+            },
+            {
+                id: "cursor", name: "Cursor", cat: "ai", domain: "cursor.com", color: "#1e1e1e",
+                packages: [
+                    { name: "Cursor Pro (500 Fast Requests Claude 3.5 / GPT-4o) 30D", price: 145000, stock: 24, sold: 142, desc: stdDesc("CURSOR AI PRO", "30 Ngày", "Trình code AI đỉnh nhất cho lập trình viên, tự động viết và sửa toàn bộ project.") },
+                    { name: "Cursor Pro Trial / Dùng Chung Tiết Kiệm 30D", price: 55000, stock: 40, sold: 89, desc: stdDesc("CURSOR TIẾT KIỆM", "30 Ngày", "Giải pháp tiết kiệm để trải nghiệm tính năng Tab và Composer.") }
+                ]
+            },
+            {
+                id: "decordiscord", name: "Decor Discord", cat: "ent", domain: "discord.com", color: "#5865f2",
+                packages: [
+                    { name: "Trang Trí Khung Avatar / Hiệu Ứng Hồ Sơ Discord Chính Chủ", price: 45000, stock: 50, sold: 64, desc: stdDesc("DECOR DISCORD PROFILE", "Vĩnh viễn theo gói", "Tặng trực tiếp khung trang trí đẹp mắt vào tài khoản Discord của bạn.") }
+                ]
+            },
+            {
+                id: "deepseek", name: "Deepseek", cat: "ai", domain: "deepseek.com", color: "#4d6bfe",
+                packages: [
+                    { name: "API DeepSeek V3 / R1 Có Sẵn Số Dư Tốc Độ Cao", price: 50000, stock: 60, sold: 73, desc: stdDesc("DEEPSEEK API / PRO", "Theo số dư", "Chạy mô hình suy luận DeepSeek R1 không lo lỗi Server Busy.") }
+                ]
+            },
+            {
+                id: "discord", name: "Discord", cat: "ent", domain: "discord.com", color: "#5865f2",
+                packages: [
+                    { name: "Discord Nitro Basic 1 Tháng - BHF", price: 45000, stock: 40, sold: 90, desc: stdDesc("DISCORD NITRO BASIC", "30 Ngày", "Dùng emoji mọi nơi, upload file lớn, huy hiệu Nitro.") },
+                    { name: "Discord Nitro Full (Kèm 2 Boost Server) 1 Tháng - BHF", price: 85000, stock: 30, sold: 115, desc: stdDesc("DISCORD NITRO FULL", "30 Ngày", "Stream HD, đổi ảnh bìa, 2 Boost nâng cấp máy chủ.") }
+                ]
+            },
+            {
+                id: "duolingo", name: "Duolingo", cat: "work", domain: "duolingo.com", color: "#58cc02",
+                packages: [
+                    { name: "[Slot] Duolingo Super Family Nâng Chính Chủ 1 Năm - BHF", price: 119000, stock: 55, sold: 230, desc: stdDesc("DUOLINGO SUPER 1 NĂM", "365 Ngày", "Trái tim vô hạn, không quảng cáo, luyện tập cá nhân hóa trên chính tài khoản của bạn.") },
+                    { name: "Duolingo Super 1 Tháng Trải Nghiệm", price: 25000, stock: 80, sold: 95, desc: stdDesc("DUOLINGO SUPER 1 THÁNG", "30 Ngày", "Kích hoạt nhanh qua link mời gia đình.") }
+                ]
+            },
+            {
+                id: "elevenlabs", name: "ElevenLabs", cat: "ai", domain: "elevenlabs.io", color: "#222222",
+                packages: [
+                    { name: "ElevenLabs Starter (30.000 Ký Tự Giọng Đọc AI Siêu Thực) 30D", price: 79000, stock: 22, sold: 68, desc: stdDesc("ELEVENLABS AI VOICE", "30 Ngày", "Tạo giọng đọc làm review phim, TikTok, YouTube và nhân bản giọng nói (Voice Cloning).") },
+                    { name: "ElevenLabs Creator (100.000 Ký Tự) 30D", price: 195000, stock: 10, sold: 27, desc: stdDesc("ELEVENLABS CREATOR", "30 Ngày", "Dung lượng lớn cho người làm nội dung chuyên nghiệp.") }
+                ]
+            },
+            {
+                id: "express", name: "ExpressVPN", cat: "vpn", domain: "expressvpn.com", color: "#da3940",
+                packages: [
+                    { name: "ExpressVPN Bản Quyền Tốc Độ Cao 30 Ngày - BHF", price: 39000, stock: 45, sold: 82, desc: stdDesc("EXPRESS VPN PRO", "30 Ngày", "Fake IP hơn 105 quốc gia, tốc độ cực nhanh, bảo mật tuyệt đối.") }
+                ]
+            },
+            {
+                id: "facebook", name: "Facebook", cat: "work", domain: "facebook.com", color: "#1877f2",
+                packages: [
+                    { name: "Via Facebook Cổ / Tài Khoản Quảng Cáo XMDT", price: 45000, stock: 90, sold: 310, desc: stdDesc("TÀI KHOẢN FACEBOOK", "Bảo hành login", "Định dạng đầy đủ UID | Pass | 2FA | Mail khôi phục.") },
+                    { name: "Dịch Vụ Tăng Tương Tác / Follow / Like Bài Viết", price: 20000, stock: 999, sold: 450, desc: stdDesc("DỊCH VỤ FACEBOOK", "Hoàn thành nhanh", "Tăng độ uy tín cho trang cá nhân và Fanpage bán hàng.") }
+                ]
+            },
+            {
+                id: "figma", name: "Figma", cat: "design", domain: "figma.com", color: "#f24e1e",
+                packages: [
+                    { name: "Figma Professional Nâng Cấp Chính Chủ 1 Năm - BHF", price: 150000, stock: 35, sold: 76, desc: stdDesc("FIGMA PRO", "365 Ngày", "Tạo project không giới hạn, Dev Mode, thư viện team đầy đủ.") }
+                ]
+            },
+            {
+                id: "fptplay", name: "FPT Play", cat: "ent", domain: "fptplay.vn", color: "#ff6600",
+                packages: [
+                    { name: "FPT Play VIP / SMAX (Xem Bóng Đá, Phim Bộ, Truyền Hình) 1 Tháng", price: 39000, stock: 40, sold: 112, desc: stdDesc("FPT PLAY VIP", "30 Ngày", "Xem trực tiếp thể thao, V-League, Cúp C1 và kho phim độc quyền.") }
+                ]
+            },
+            {
+                id: "freepik", name: "Freepik", cat: "design", domain: "freepik.com", color: "#1273eb",
+                packages: [
+                    { name: "Freepik Premium (Tải Vector, PSD, Ảnh, AI) 30 Ngày", price: 49000, stock: 30, sold: 94, desc: stdDesc("FREEPIK PREMIUM", "30 Ngày", "Tải tài nguyên thiết kế chất lượng cao không dính bản quyền.") }
+                ]
+            },
+            {
+                id: "galaxyplay", name: "Galaxy Play", cat: "ent", domain: "galaxyplay.vn", color: "#eab308",
+                packages: [
+                    { name: "Galaxy Play Cao Cấp Xem Phim Chiếu Rạp Việt Nam 1 Tháng", price: 29000, stock: 38, sold: 54, desc: stdDesc("GALAXY PLAY VIP", "30 Ngày", "Kho phim điện ảnh Việt chiếu rạp chất lượng 4K Dolby Atmos.") }
+                ]
+            },
+            {
+                id: "gamma", name: "Gamma", cat: "ai", domain: "gamma.app", color: "#6d28d9",
+                packages: [
+                    { name: "Gamma AI Pro (Tạo Slide Thuyết Trình PowerPoint Bằng AI) 30D", price: 65000, stock: 25, sold: 88, desc: stdDesc("GAMMA AI PLUS/PRO", "30 Ngày", "Tạo bài thuyết trình tự động chỉ từ 1 câu lệnh, xóa logo Made with Gamma.") }
+                ]
+            },
+            {
+                id: "autodesk", name: "AutoDesk", cat: "design", domain: "autodesk.com", color: "#0696d7",
+                packages: [
+                    { name: "AutoDesk Full App (AutoCAD, Revit, Civil 3D, 3ds Max) Chính Chủ 1 Năm", price: 180000, stock: 50, sold: 165, desc: stdDesc("AUTODESK BẢN QUYỀN CHÍNH CHỦ", "1 Năm", "Kích hoạt trực tiếp vào mail cá nhân, tải trực tiếp từ trang chủ Autodesk: AutoCAD, Revit, Civil 3D, Inventor, Maya...") }
+                ]
+            },
+            {
+                id: "genspark", name: "GenSpark", cat: "ai", domain: "genspark.ai", color: "#2563eb",
+                packages: [
+                    { name: "GenSpark AI Plus (Tìm Kiếm & Tổng Hợp AI Đa Tác Vụ) 30D", price: 59000, stock: 20, sold: 31, desc: stdDesc("GENSPARK AI", "30 Ngày", "Trợ lý nghiên cứu và tổng hợp thông tin thông minh thế hệ mới.") }
+                ]
+            },
+            {
+                id: "github", name: "GitHub", cat: "ai", domain: "github.com", color: "#24292e",
+                packages: [
+                    { name: "GitHub Copilot Pro (Trợ Lý Code AI Tích Hợp VSCode) 1 Tháng", price: 55000, stock: 42, sold: 130, desc: stdDesc("GITHUB COPILOT PRO", "30 Ngày", "Gợi ý code thông minh theo thời gian thực trên VS Code, Visual Studio, JetBrains.") }
+                ]
+            },
+            {
+                id: "gmail", name: "Gmail", cat: "work", domain: "mail.google.com", color: "#ea4335",
+                packages: [
+                    { name: "Gmail Cổ Ngâm Lâu Năm (Độ Trust Cao, Không Checkpoint)", price: 15000, stock: 250, sold: 820, desc: stdDesc("GMAIL TRUST CAO", "Bảo hành login 7 ngày", "Định dạng Mail | Pass | Mail khôi phục. Dùng đăng ký dịch vụ cực bền.") }
+                ]
+            },
+            {
+                id: "google", name: "Google One", cat: "work", domain: "one.google.com", color: "#4285f4",
+                packages: [
+                    { name: "Google One 200GB Nâng Cấp Chính Chủ 1 Năm", price: 120000, stock: 45, sold: 140, desc: stdDesc("GOOGLE ONE 200GB", "365 Ngày", "Mở rộng dung lượng Google Drive, Gmail, Google Photos chính chủ.") },
+                    { name: "Google One 2TB Nâng Cấp Chính Chủ 1 Năm", price: 280000, stock: 30, sold: 95, desc: stdDesc("GOOGLE ONE 2TB", "365 Ngày", "Dung lượng 2000GB lưu trữ thoải mái trên tài khoản cá nhân.") }
+                ]
+            },
+            {
+                id: "gpmlogin", name: "GPM Login", cat: "vpn", domain: "gpmloginapp.com", color: "#1d4ed8",
+                packages: [
+                    { name: "GPM Login Antidetect Browser (Nuôi Tài Khoản MMO) 1 Tháng", price: 150000, stock: 15, sold: 42, desc: stdDesc("GPM LOGIN BROWSER", "30 Ngày", "Tạo hàng loạt profile trình duyệt sạch chống khóa tài khoản.") }
+                ]
+            },
+            {
+                id: "grammarly", name: "Grammarly", cat: "work", domain: "grammarly.com", color: "#15c39a",
+                packages: [
+                    { name: "Grammarly Premium (Sửa Ngữ Pháp Tiếng Anh & Viết Lại AI) 30D", price: 35000, stock: 50, sold: 118, desc: stdDesc("GRAMMARLY PREMIUM", "30 Ngày", "Kiểm tra ngữ pháp, đạo văn và nâng cấp từ vựng học thuật.") }
+                ]
+            },
+            {
+                id: "amazonprime", name: "Amazon Prime", cat: "ent", domain: "primevideo.com", color: "#00a8e1",
+                packages: [
+                    { name: "Amazon Prime Video 4K Xem Phim Bản Quyền 30 Ngày", price: 35000, stock: 30, sold: 60, desc: stdDesc("AMAZON PRIME VIDEO", "30 Ngày", "Xem phim bom tấn độc quyền trên Prime Video chất lượng 4K.") }
+                ]
+            },
+            {
+                id: "heygen", name: "HeyGen", cat: "ai", domain: "heygen.com", color: "#7c3aed",
+                packages: [
+                    { name: "HeyGen AI Creator (Tạo MC Ảo & Dịch Video Nhép Môi) 30D", price: 140000, stock: 14, sold: 53, desc: stdDesc("HEYGEN AI VIDEO", "30 Ngày", "Tạo video nhân vật ảo thuyết trình chuyên nghiệp không cần quay phim.") }
+                ]
+            },
+            {
+                id: "higgfield", name: "Higgsfield", cat: "ai", domain: "higgsfield.ai", color: "#84cc16",
+                packages: [
+                    { name: "Higgsfield AI Pro (Điều Khiển Chuyển Động Video AI) 30D", price: 95000, stock: 18, sold: 25, desc: stdDesc("HIGGSFIELD AI", "30 Ngày", "Công cụ tạo hiệu ứng chuyển động camera và nhân vật video AI cực chất.") }
+                ]
+            },
+            {
+                id: "hmavpn", name: "HMA VPN", cat: "vpn", domain: "hidemyass.com", color: "#f59e0b",
+                packages: [
+                    { name: "Key HMA VPN Bản Quyền 30 Ngày (Đa Quốc Gia) - BHF", price: 29000, stock: 65, sold: 190, desc: stdDesc("HMA VPN KEY", "30 Ngày", "Cấp mã Key nhập trực tiếp vào phần mềm HMA trên PC và Điện thoại.") }
+                ]
+            },
+            {
+                id: "hotspotshield", name: "Hotspot Shield", cat: "vpn", domain: "hotspotshield.com", color: "#0ea5e9",
+                packages: [
+                    { name: "Hotspot Shield VPN Premium 30 Ngày - BHF", price: 35000, stock: 40, sold: 50, desc: stdDesc("HOTSPOT SHIELD VPN", "30 Ngày", "Kết nối VPN tốc độ cao chuyên chơi game và xem phim.") }
+                ]
+            },
+            {
+                id: "icloud", name: "iCloud+", cat: "work", domain: "icloud.com", color: "#007aff",
+                packages: [
+                    { name: "Nâng Cấp iCloud+ 50GB / 200GB Chính Chủ Apple ID (1 Tháng)", price: 25000, stock: 70, sold: 215, desc: stdDesc("ICLOUD+ APPLE CHÍNH CHỦ", "30 Ngày", "Chia sẻ qua Family Apple, dữ liệu ảnh và sao lưu riêng tư 100%.") }
+                ]
+            },
+            {
+                id: "ilovepdf", name: "iLovePDF", cat: "work", domain: "ilovepdf.com", color: "#e5322d",
+                packages: [
+                    { name: "iLovePDF Premium (Nén, Ghép, Chuyển Đổi PDF Không Giới Hạn) 30D", price: 30000, stock: 40, sold: 66, desc: stdDesc("ILOVEPDF PREMIUM", "30 Ngày", "Xử lý tài liệu PDF, OCR nhận diện chữ viết không giới hạn dung lượng.") }
+                ]
+            },
+            {
+                id: "jetbrains", name: "JetBrains", cat: "ai", domain: "jetbrains.com", color: "#fe315d",
+                packages: [
+                    { name: "JetBrains All Products Pack (IntelliJ, PyCharm, WebStorm, PhpStorm) 1 Năm", price: 160000, stock: 30, sold: 84, desc: stdDesc("JETBRAINS ALL PRODUCTS", "365 Ngày", "Mở khóa toàn bộ bộ công cụ IDE lập trình chuyên nghiệp của JetBrains.") }
+                ]
+            },
+            {
+                id: "kahoot", name: "Kahoot", cat: "work", domain: "kahoot.com", color: "#46178f",
+                packages: [
+                    { name: "Kahoot!+ Premier / Max (Tổ Chức Trò Chơi Trắc Nghiệm Lớp Học) 30D", price: 59000, stock: 20, sold: 45, desc: stdDesc("KAHOOT PRO", "30 Ngày", "Tăng số lượng người tham gia phòng thi và mở khóa các dạng câu hỏi nâng cao.") }
+                ]
+            },
+            {
+                id: "kaspersky", name: "Kaspersky", cat: "vpn", domain: "kaspersky.com", color: "#00a88e",
+                packages: [
+                    { name: "Key Kaspersky Plus / Internet Security Bản Quyền 1 Năm", price: 110000, stock: 45, sold: 125, desc: stdDesc("KASPERSKY ANTI-VIRUS", "365 Ngày", "Bảo vệ máy tính khỏi virus, mã độc, trojan nhẹ máy và an toàn.") }
+                ]
+            },
+            {
+                id: "youku", name: "Youku", cat: "ent", domain: "youku.com", color: "#00a0e9",
+                packages: [
+                    { name: "Youku VIP (Xem Phim Hoa Ngữ Độc Quyền 4K Vietsub) 30 Ngày", price: 39000, stock: 35, sold: 72, desc: stdDesc("YOUKU VIP", "30 Ngày", "Xem sớm tập mới nhất các bộ phim cổ trang, ngôn tình Trung Quốc.") }
+                ]
+            },
+            {
+                id: "kiro", name: "Kiro", cat: "ai", domain: "kiro.dev", color: "#8b5cf6",
+                packages: [
+                    { name: "Kiro AI IDE Pro (Spec-driven AI Coding) 30 Ngày", price: 89000, stock: 15, sold: 28, desc: stdDesc("KIRO AI IDE", "30 Ngày", "Trình lập trình AI thông minh tích hợp mô hình Claude Sonnet.") }
+                ]
+            },
+            {
+                id: "kling", name: "Kling AI", cat: "ai", domain: "klingai.com", color: "#111827",
+                packages: [
+                    { name: "Kling AI Pro (Tạo Video AI Chuyển Động Mượt Từ Ảnh/Chữ) 30D", price: 115000, stock: 22, sold: 94, desc: stdDesc("KLING AI VIDEO", "30 Ngày", "Có sẵn Credits tốc độ cao tạo video AI chất lượng điện ảnh không watermark.") }
+                ]
+            },
+            {
+                id: "linkedin", name: "LinkedIn", cat: "work", domain: "linkedin.com", color: "#0a66c2",
+                packages: [
+                    { name: "LinkedIn Premium Career / Business Nâng Chính Chủ 1 Tháng", price: 85000, stock: 25, sold: 49, desc: stdDesc("LINKEDIN PREMIUM", "30 Ngày", "Xem ai đã ghé thăm hồ sơ, gửi InMail và học toàn bộ khóa LinkedIn Learning.") }
+                ]
+            },
+            {
+                id: "locket", name: "Locket Gold", cat: "ent", domain: "locketcamera.com", color: "#eab308",
+                packages: [
+                    { name: "Nâng Cấp Locket Gold Chính Chủ Vĩnh Viễn (Up Ảnh Từ Thư Viện, Quay Video)", price: 35000, stock: 100, sold: 420, desc: stdDesc("LOCKET GOLD", "Bảo hành dài hạn", "Mở khóa huy hiệu Gold, đăng ảnh có sẵn trong máy, không quảng cáo.") }
+                ]
+            },
+            {
+                id: "lovable", name: "Lovable", cat: "ai", domain: "lovable.dev", color: "#ec4899",
+                packages: [
+                    { name: "Lovable.dev Pro (Tạo Web/App Fullstack Bằng AI) 30 Ngày", price: 135000, stock: 16, sold: 37, desc: stdDesc("LOVABLE AI PRO", "30 Ngày", "Thiết kế và xuất bản ứng dụng web hoàn chỉnh chỉ bằng câu lệnh tiếng Việt.") }
+                ]
+            },
+            {
+                id: "mbbank", name: "MB Bank", cat: "work", domain: "mbbank.com.vn", color: "#1d4ed8",
+                packages: [
+                    { name: "Hỗ Trợ Tạo Mã QR / Tư Vấn Tài Khoản Số Đẹp MB Bank", price: 10000, stock: 50, sold: 30, desc: stdDesc("DỊCH VỤ MB BANK", "Hỗ trợ 24/7", "Hỗ trợ thiết lập tài khoản số đẹp theo ngày sinh, số điện thoại.") }
+                ]
+            },
+            {
+                id: "meitu", name: "Meitu VIP", cat: "design", domain: "meitu.com", color: "#f43f5e",
+                packages: [
+                    { name: "Meitu VIP (Chỉnh Ảnh Làm Đẹp AI, Xóa Vật Thể) 30 Ngày", price: 45000, stock: 30, sold: 88, desc: stdDesc("MEITU VIP", "30 Ngày", "Mở khóa toàn bộ bộ lọc màu, trang điểm AI và chỉnh sửa chân dung cao cấp.") }
+                ]
+            },
+            {
+                id: "microsoft", name: "Microsoft 365", cat: "work", domain: "microsoft.com", color: "#00a4ef",
+                packages: [
+                    { name: "Microsoft Office 365 Bản Quyền + 1TB OneDrive Chính Chủ (1 Năm)", price: 129000, stock: 75, sold: 260, desc: stdDesc("MICROSOFT 365 CHÍNH CHỦ", "365 Ngày", "Sử dụng Word, Excel, PowerPoint bản quyền trên 5 thiết bị + 1TB lưu trữ OneDrive.") },
+                    { name: "Key Windows 10 / 11 Pro Bản Quyền Vĩnh Viễn", price: 89000, stock: 60, sold: 145, desc: stdDesc("KEY WINDOWS PRO", "Vĩnh viễn theo máy", "Nhập key kích hoạt trực tiếp trong Cài đặt Windows, update thoải mái.") }
+                ]
+            },
+            {
+                id: "minimax", name: "Minimax (Hailuo AI)", cat: "ai", domain: "hailuoai.video", color: "#e11d48",
+                packages: [
+                    { name: "Hailuo Minimax AI Video & Audio Pro 30 Ngày", price: 110000, stock: 20, sold: 52, desc: stdDesc("MINIMAX HAILUO AI", "30 Ngày", "Tạo video AI chuyển động siêu mượt và giọng đọc AI tự nhiên.") }
+                ]
+            },
+            {
+                id: "n8n", name: "n8n", cat: "ai", domain: "n8n.io", color: "#ff6d5a",
+                packages: [
+                    { name: "n8n Cloud / Server Tự Động Hóa Workflow AI 30 Ngày", price: 95000, stock: 25, sold: 61, desc: stdDesc("N8N AUTOMATION", "30 Ngày", "Xây dựng hệ thống tự động hóa đăng bài, chatbot Telegram, Zalo, Facebook.") }
+                ]
+            },
+            {
+                id: "zoom", name: "Zoom Pro", cat: "work", domain: "zoom.us", color: "#2d8cff",
+                packages: [
+                    { name: "Zoom Pro 100 Người (Họp Không Giới Hạn 40 Phút) 30 Ngày", price: 49000, stock: 45, sold: 138, desc: stdDesc("ZOOM PRO 30 NGÀY", "30 Ngày", "Họp trực tuyến liên tục không bị ngắt quãng 40p, có tính năng Co-host, ghi hình.") }
+                ]
+            },
+            {
+                id: "nordvpn", name: "NordVPN", cat: "vpn", domain: "nordvpn.com", color: "#4687ff",
+                packages: [
+                    { name: "NordVPN Premium (Bảo Mật & Đổi IP Tốc Độ Cao) 1 Tháng", price: 30000, stock: 60, sold: 140, desc: stdDesc("NORDVPN PREMIUM", "30 Ngày", "Hơn 5000 máy chủ toàn cầu, vượt tường lửa mượt mà.") },
+                    { name: "NordVPN Premium Bảo Hành 1 Năm", price: 159000, stock: 35, sold: 85, desc: stdDesc("NORDVPN 1 NĂM", "365 Ngày", "Tiết kiệm chi phí cho nhu cầu dùng lâu dài.") }
+                ]
+            },
+            {
+                id: "notion", name: "Notion", cat: "work", domain: "notion.so", color: "#191919",
+                packages: [
+                    { name: "Notion Plus + Notion AI Nâng Cấp Chính Chủ 1 Năm", price: 140000, stock: 40, sold: 110, desc: stdDesc("NOTION PLUS + AI", "365 Ngày", "Quản lý công việc, ghi chú và tải file không giới hạn dung lượng.") }
+                ]
+            },
+            {
+                id: "openart", name: "OpenArt", cat: "ai", domain: "openart.ai", color: "#6366f1",
+                packages: [
+                    { name: "OpenArt AI Pro (Vẽ Ảnh AI Flux, SDXL, Đồng Nhất Nhân Vật) 30D", price: 85000, stock: 20, sold: 33, desc: stdDesc("OPENART AI PRO", "30 Ngày", "Kho công cụ vẽ và chỉnh sửa ảnh AI chuyên nghiệp.") }
+                ]
+            },
+            {
+                id: "outlook", name: "Outlook / Hotmail", cat: "work", domain: "outlook.live.com", color: "#0078d4",
+                packages: [
+                    { name: "Lô 10 Tài Khoản Outlook / Hotmail Trust Cao Đã Mở OAuth2", price: 15000, stock: 300, sold: 610, desc: stdDesc("OUTLOOK MAIL", "Bảo hành login", "Dùng nhận code, tạo tài khoản mạng xã hội và game.") }
+                ]
+            },
+            {
+                id: "perplexity", name: "Perplexity", cat: "ai", domain: "perplexity.ai", color: "#20808d",
+                packages: [
+                    { name: "Perplexity Pro (Tích Hợp GPT-4o, Claude 3.5, Grok, Sonar) 1 Tháng", price: 55000, stock: 45, sold: 128, desc: stdDesc("PERPLEXITY PRO", "30 Ngày", "Công cụ tìm kiếm trích dẫn nguồn chuẩn xác nhất kèm kho model AI hội tụ.") },
+                    { name: "Perplexity Pro Nâng Chính Chủ 1 Năm", price: 380000, stock: 15, sold: 42, desc: stdDesc("PERPLEXITY PRO 1 NĂM", "365 Ngày", "Nâng cấp trực tiếp trên tài khoản của bạn.") }
+                ]
+            },
+            {
+                id: "polloai", name: "Pollo AI", cat: "ai", domain: "pollo.ai", color: "#f97316",
+                packages: [
+                    { name: "Pollo AI Video Generator Pro 30 Ngày", price: 79000, stock: 18, sold: 24, desc: stdDesc("POLLO AI PRO", "30 Ngày", "Tạo video sáng tạo từ văn bản và hình ảnh nhanh chóng.") }
+                ]
+            },
+            {
+                id: "proton", name: "Proton VPN / Mail", cat: "vpn", domain: "proton.me", color: "#6d4aff",
+                packages: [
+                    { name: "Proton VPN Plus (Bảo Mật Thụy Sĩ Tốc Độ Cao) 30 Ngày", price: 45000, stock: 30, sold: 51, desc: stdDesc("PROTON VPN PLUS", "30 Ngày", "An toàn tuyệt đối, không lưu nhật ký truy cập.") }
+                ]
+            },
+            {
+                id: "quizlet", name: "Quizlet", cat: "work", domain: "quizlet.com", color: "#4255ff",
+                packages: [
+                    { name: "Quizlet Plus (Học Từ Vựng Flashcard Không Quảng Cáo) 1 Năm", price: 99000, stock: 50, sold: 132, desc: stdDesc("QUIZLET PLUS 1 NĂM", "365 Ngày", "Học ngoại ngữ và ôn thi hiệu quả với chế độ Learn & Test không giới hạn.") }
+                ]
+            },
+            {
+                id: "qwen", name: "Qwen AI", cat: "ai", domain: "chat.qwen.ai", color: "#615ced",
+                packages: [
+                    { name: "Tài Khoản / API Qwen 2.5 Max Coding & Vision", price: 45000, stock: 35, sold: 40, desc: stdDesc("QWEN AI PRO", "30 Ngày", "Mô hình ngôn ngữ và tạo ảnh/video mạnh mẽ từ Alibaba Cloud.") }
+                ]
+            },
+            {
+                id: "railway", name: "Railway", cat: "ai", domain: "railway.app", color: "#13111c",
+                packages: [
+                    { name: "Railway Hobby / Pro Plan (Deploy Web, Bot Telegram, Database) 30D", price: 95000, stock: 20, sold: 47, desc: stdDesc("RAILWAY CLOUD HOSTING", "30 Ngày", "Chạy server Node.js, Python, Docker mượt mà 24/7.") }
+                ]
+            },
+            {
+                id: "roblox", name: "Roblox", cat: "ent", domain: "roblox.com", color: "#111111",
+                packages: [
+                    { name: "Gói Robux Chính Hãng / Roblox Premium 1 Tháng", price: 49000, stock: 80, sold: 245, desc: stdDesc("ROBLOX / ROBUX", "Bảo hành uy tín", "Nạp nhanh chóng, an toàn tuyệt đối cho tài khoản game.") }
+                ]
+            },
+            {
+                id: "scribd", name: "SCRIBD", cat: "work", domain: "scribd.com", color: "#1e7b85",
+                packages: [
+                    { name: "Scribd + Everand + SlideShare (Tải Tài Liệu PDF Không Giới Hạn) 30D", price: 29000, stock: 60, sold: 155, desc: stdDesc("SCRIBD PREMIUM", "30 Ngày", "Mở khóa tải hàng triệu tài liệu, giáo trình, đồ án và sách nói.") }
+                ]
+            },
+            {
+                id: "spotify", name: "Spotify", cat: "ent", domain: "spotify.com", color: "#1db954",
+                packages: [
+                    { name: "Spotify Premium Nâng Cấp Chính Chủ 1 Tháng - BHF", price: 25000, stock: 95, sold: 320, desc: stdDesc("SPOTIFY PREMIUM 1 THÁNG", "30 Ngày", "Nghe nhạc không quảng cáo, tải nhạc offline giữ nguyên playlist của bạn.") },
+                    { name: "Spotify Premium Nâng Cấp Chính Chủ 1 Năm - BHF", price: 229000, stock: 50, sold: 185, desc: stdDesc("SPOTIFY PREMIUM 1 NĂM", "365 Ngày", "Bảo hành trọn 12 tháng trên tài khoản cá nhân.") }
+                ]
+            },
+            {
+                id: "suno", name: "Suno AI", cat: "ai", domain: "suno.com", color: "#f97316",
+                packages: [
+                    { name: "Suno AI Pro (2.500 Credits = 500 Bài Hát Bản Quyền Thương Mại) 30D", price: 79000, stock: 38, sold: 145, desc: stdDesc("SUNO AI PRO V4", "30 Ngày", "Sáng tác nhạc AI tiếng Việt cực hay với mô hình v4 mới nhất.") }
+                ]
+            },
+            {
+                id: "surfshark", name: "SurfShark", cat: "vpn", domain: "surfshark.com", color: "#178fe1",
+                packages: [
+                    { name: "SurfShark VPN Starter / One 1 Tháng - BHF", price: 29000, stock: 55, sold: 98, desc: stdDesc("SURFSHARK VPN", "30 Ngày", "Đổi IP tốc độ cao, chặn quảng cáo và phần mềm độc hại.") }
+                ]
+            },
+            {
+                id: "telegram", name: "Telegram", cat: "work", domain: "telegram.org", color: "#26a5e4",
+                packages: [
+                    { name: "Telegram Premium Chính Chủ 1 Tháng (Gửi Gift Không Cần Login)", price: 89000, stock: 60, sold: 210, desc: stdDesc("TELEGRAM PREMIUM", "30 Ngày", "Chỉ cần gửi @username, nhận ngay tích sao xanh, nhân đôi giới hạn, dịch tự động.") },
+                    { name: "Telegram Premium Chính Chủ 3 Tháng", price: 245000, stock: 40, sold: 95, desc: stdDesc("TELEGRAM PREMIUM 3 THÁNG", "90 Ngày", "Gửi Gift chính hãng an toàn 100%.") }
+                ]
+            },
+            {
+                id: "tiktok", name: "TikTok", cat: "ent", domain: "tiktok.com", color: "#000000",
+                packages: [
+                    { name: "Tài Khoản TikTok Có Sẵn Follow Mở Livestream / TikTok Shop", price: 55000, stock: 45, sold: 160, desc: stdDesc("TÀI KHOẢN TIKTOK", "Bảo hành login", "Bàn giao full thông tin trắng sạch, đổi mật khẩu thoải mái.") }
+                ]
+            },
+            {
+                id: "tv360", name: "TV360", cat: "ent", domain: "tv360.vn", color: "#e11d48",
+                packages: [
+                    { name: "TV360 VIP / Thể Thao (Xem Ngoại Hạng Anh, C1, Phim 4K) 30 Ngày", price: 35000, stock: 40, sold: 80, desc: stdDesc("TV360 VIP", "30 Ngày", "Xem truyền hình và bóng đá tốc độ cao không giật lag.") }
+                ]
+            },
+            {
+                id: "udemy", name: "Udemy", cat: "work", domain: "udemy.com", color: "#a435f0",
+                packages: [
+                    { name: "Udemy Personal Plan (Học Hơn 11.000 Khóa Lập Trình, Kinh Doanh, Đồ Họa) 30D", price: 65000, stock: 30, sold: 77, desc: stdDesc("UDEMY PERSONAL PLAN", "30 Ngày", "Truy cập kho khóa học thực chiến hàng đầu thế giới.") }
+                ]
+            },
+            {
+                id: "apple", name: "Apple One / Music", cat: "ent", domain: "apple.com", color: "#111111",
+                packages: [
+                    { name: "Apple Music + Apple TV+ + Arcade Chính Chủ 1 Tháng", price: 35000, stock: 60, sold: 140, desc: stdDesc("APPLE SERVICES", "30 Ngày", "Nghe nhạc Lossless Dolby Atmos trên iPhone, iPad, Mac.") }
+                ]
+            },
+            {
+                id: "vieon", name: "VieON", cat: "ent", domain: "vieon.vn", color: "#16a34a",
+                packages: [
+                    { name: "VieON VIP / All Access (Show Giải Trí, Phim Độc Quyền, K+) 1 Tháng", price: 35000, stock: 50, sold: 115, desc: stdDesc("VIEON VIP", "30 Ngày", "Xem Anh Trai Say Hi, 2 Ngày 1 Đêm và phim truyền hình sớm nhất.") }
+                ]
+            },
+            {
+                id: "wink", name: "Wink VIP", cat: "design", domain: "wink.ai", color: "#111827",
+                packages: [
+                    { name: "Wink VIP (Làm Nét Video AI, Chỉnh Dáng & Da Video) 30 Ngày", price: 45000, stock: 42, sold: 175, desc: stdDesc("WINK VIP PRO", "30 Ngày", "Khôi phục video mờ thành 4K 60fps, làm đẹp trên từng khung hình video.") }
+                ]
+            },
+            {
+                id: "wisprflow", name: "Wispr Flow", cat: "ai", domain: "wisprflow.ai", color: "#3b82f6",
+                packages: [
+                    { name: "Wispr Flow Pro (Nhập Liệu Bằng Giọng Nói AI Cực Nhanh) 30D", price: 69000, stock: 20, sold: 32, desc: stdDesc("WISPR FLOW PRO", "30 Ngày", "Nói và tự động chuyển thành văn bản chuẩn ngữ pháp trên mọi ứng dụng.") }
+                ]
+            },
+            {
+                id: "xtwitter", name: "X (Twitter)", cat: "ent", domain: "x.com", color: "#000000",
+                packages: [
+                    { name: "Tài Khoản X Cổ / Nâng Cấp X Premium Tích Xanh 1 Tháng", price: 45000, stock: 35, sold: 88, desc: stdDesc("X / TWITTER SERVICE", "30 Ngày", "Hỗ trợ tài khoản X độ tin cậy cao và mở tính năng Grok AI.") }
+                ]
+            },
+            {
+                id: "xingtu", name: "Xingtu (Hypic)", cat: "design", domain: "ulikecam.com", color: "#84cc16",
+                packages: [
+                    { name: "Xingtu / Hypic VIP (App Chỉnh Ảnh Tỷ Tỷ Douyin Đỉnh Nhất) 30D", price: 45000, stock: 48, sold: 190, desc: stdDesc("XINGTU VIP", "30 Ngày", "Mở khóa toàn bộ công thức màu và tính năng chỉnh ảnh AI Douyin.") }
+                ]
+            },
+            {
+                id: "youtube", name: "YouTube", cat: "ent", domain: "youtube.com", color: "#ff0000",
+                packages: [
+                    { name: "YouTube Premium + YouTube Music Nâng Mail Chính Chủ 1 Tháng - BHF", price: 39000, stock: 110, sold: 450, desc: stdDesc("YOUTUBE PREMIUM 1 THÁNG", "30 Ngày", "Không quảng cáo, nghe nhạc tắt màn hình trên TV, Điện thoại, Máy tính.") },
+                    { name: "YouTube Premium Nâng Mail Chính Chủ 6 Tháng - BHF", price: 189000, stock: 65, sold: 210, desc: stdDesc("YOUTUBE PREMIUM 6 THÁNG", "180 Ngày", "Ổn định dài hạn trên chính Gmail của bạn.") },
+                    { name: "YouTube Premium Nâng Mail Chính Chủ 1 Năm - BHF", price: 349000, stock: 45, sold: 190, desc: stdDesc("YOUTUBE PREMIUM 1 NĂM", "365 Ngày", "Gói tiết kiệm nhất, bảo hành trọn 365 ngày.") }
+                ]
+            },
+            {
+                id: "netflix", name: "Netflix", cat: "ent", domain: "netflix.com", color: "#e50914",
+                packages: [
+                    { name: "[Slot] Netflix Premium 4K Ultra HD (1 Profile Riêng Có Mã PIN) 30D - BHF", price: 49000, stock: 64, sold: 380, desc: stdDesc("NETFLIX 4K PROFILE RIÊNG", "30 Ngày", "Chất lượng 4K HDR cao nhất, có Sub Việt đầy đủ, cấp 1 hồ sơ riêng biệt có PIN.") },
+                    { name: "Netflix Premium 4K (Gói 3 Tháng Ổn Định) - BHF", price: 139000, stock: 30, sold: 115, desc: stdDesc("NETFLIX 4K 3 THÁNG", "90 Ngày", "Không lo gia hạn hàng tháng, bảo hành suốt 90 ngày.") }
+                ]
+            },
+            {
+                id: "museai", name: "Muse AI", cat: "ai", domain: "muse.ai", color: "#0284c7",
+                packages: [
+                    { name: "Muse AI Pro (Tạo Nhạc & Xử Lý Video AI) 30 Ngày", price: 65000, stock: 20, sold: 29, desc: stdDesc("MUSE AI PRO", "30 Ngày", "Sáng tạo âm thanh và lưu trữ video thông minh.") }
+                ]
+            },
+            {
+                id: "xbox", name: "Xbox Game Pass", cat: "ent", domain: "xbox.com", color: "#107c10",
+                packages: [
+                    { name: "Xbox PC Game Pass Ultimate (Chơi Hàng Trăm Game Bản Quyền) 1 Tháng", price: 49000, stock: 45, sold: 130, desc: stdDesc("XBOX GAME PASS", "30 Ngày", "Chơi Forza Horizon, Call of Duty, FIFA (EA Play), Minecraft bản quyền trên PC.") }
+                ]
+            },
+            {
+                id: "artlist", name: "Artlist", cat: "design", domain: "artlist.io", color: "#eab308",
+                packages: [
+                    { name: "Artlist Max (Tải Nhạc Bản Quyền, Sound Effects, Footage 4K) 30D", price: 79000, stock: 22, sold: 54, desc: stdDesc("ARTLIST PRO", "30 Ngày", "Kho nhạc không bản quyền tốt nhất cho Editor và YouTuber.") }
+                ]
+            }
+        ];
+    </script>
+
+    <script>
+        // Tự động giữ nguyên dữ liệu đã chỉnh sửa nếu có trong máy của bạn
+        let adminPass = window.DEFAULT_ADMIN_PASS;
+        let shopConfig = window.DEFAULT_SHOP_CONFIG;
+        let products = window.DEFAULT_PRODUCTS;
+
+        try {
+            // Giữ lại dữ liệu phiên bản cũ nếu bạn đã từng chỉnh sửa trước đó
+            const legacyProds = localStorage.getItem('vu_products_v3') || localStorage.getItem('vu_products_v2') || localStorage.getItem('app_user_products');
+            if (legacyProds) {
+                const parsed = JSON.parse(legacyProds);
+                if (Array.isArray(parsed) && parsed.length > 0) products = parsed;
+            }
+
+            const legacyCfg = localStorage.getItem('vu_shop_cfg_v3') || localStorage.getItem('vu_shop_cfg') || localStorage.getItem('app_shop_config');
+            if (legacyCfg) {
+                shopConfig = JSON.parse(legacyCfg);
+            }
+
+            const legacyPass = localStorage.getItem('vu_admin_pass_v3') || localStorage.getItem('vu_admin_pass') || localStorage.getItem('app_admin_pass');
+            if (legacyPass) {
+                adminPass = legacyPass;
+            }
+        } catch (e) {
+            console.warn("Khởi chạy dữ liệu gốc an toàn.");
+        }
+
+        let currentCat = 'all';
+        let cart = [];
+        let activeApp = null;
+        let activePkgIdx = 0;
+        let buyQty = 1;
+        let currentOrder = {};
+
+        function saveState() {
+            try {
+                localStorage.setItem('vu_admin_pass_v3', adminPass);
+                localStorage.setItem('vu_shop_cfg_v3', JSON.stringify(shopConfig));
+                localStorage.setItem('vu_products_v3', JSON.stringify(products));
+            } catch (e) {}
+        }
+
+        function resetDefaultData() {
+            if (confirm("Khôi phục toàn bộ danh sách sản phẩm và cài đặt về mặc định ban đầu?")) {
+                localStorage.removeItem('vu_admin_pass_v3');
+                localStorage.removeItem('vu_shop_cfg_v3');
+                localStorage.removeItem('vu_products_v3');
+                location.reload();
+            }
+        }
+
+        function applyShopUI() {
+            document.getElementById('dispBrandName').innerText = shopConfig.brandName;
+            document.getElementById('dispWelcomeName').innerText = shopConfig.brandName + " Store";
+            document.getElementById('dispPhoneNotice').innerText = shopConfig.phone;
+            document.getElementById('dispFooterBrand').innerText = shopConfig.brandName + " DIGITAL SERVICES";
+            document.getElementById('dispFooterPhone').innerText = shopConfig.phone;
+            document.getElementById('dispFooterBank').innerText = `${shopConfig.bankCode} - ${shopConfig.accountNo}`;
+            document.getElementById('dispZaloName').innerText = shopConfig.brandName;
+            document.getElementById('dispZaloPhone').innerText = "SĐT/Zalo: " + shopConfig.phone;
+            document.getElementById('zaloQrImg').src = shopConfig.zaloQrUrl;
+            document.getElementById('zaloLinkBtn').href = "https://zalo.me/" + shopConfig.phone.replace(/\s+/g, '');
+        }
+
+        function getIconHtml(app) {
+            const url = app.domain.startsWith('http') ? app.domain : `https://www.google.com/s2/favicons?domain=${app.domain}&sz=128`;
+            const letter = app.name.charAt(0).toUpperCase();
+            return `<img src="${url}" onerror="this.style.display='none'; this.parentElement.innerText='${letter}';" alt="${app.name}">`;
+        }
+
+        function setCat(cat, btn) {
+            currentCat = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const kw = document.getElementById('searchBox').value.trim().toLowerCase();
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            const filtered = products.filter(app => {
+                const matchCat = currentCat === 'all' || app.cat === currentCat;
+                const matchKw = !kw || app.name.toLowerCase().includes(kw) || app.packages.some(pk => pk.name.toLowerCase().includes(kw));
+                return matchCat && matchKw;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 30px; color:#64748b;">Không tìm thấy ứng dụng nào khớp với từ khóa.</div>`;
+                return;
+            }
+
+            filtered.forEach(app => {
+                const totalStock = app.packages.reduce((s, pk) => s + Number(pk.stock || 0), 0);
+                const minPrice = Math.min(...app.packages.map(pk => Number(pk.price || 0)));
+                const isOut = totalStock <= 0;
+
+                grid.innerHTML += `
+                    <div class="prod-card ${isOut ? 'out-of-stock' : ''}" onclick="openAppModal('${app.id}')">
+                        <div class="card-header">
+                            <div class="prod-icon" style="background:${app.color || '#1e293b'}">${getIconHtml(app)}</div>
+                            <div class="prod-info">
+                                <div class="prod-name">${app.name}</div>
+                                <div class="prod-pkg-count">📦 ${app.packages.length} phân loại gói</div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="prod-price">Từ ${(minPrice/1000).toFixed(0)}k</div>
+                            <span class="badge-stock ${isOut ? 'badge-out' : ''}">${isOut ? 'HẾT HÀNG' : `Sẵn ${totalStock} TK`}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openAppModal(appId) {
+            activeApp = products.find(a => a.id === appId);
+            if (!activeApp) return;
+
+            activePkgIdx = 0;
+            buyQty = 1;
+            document.getElementById('modalProdName').innerText = activeApp.name;
+            const iconBox = document.getElementById('modalProdIcon');
+            iconBox.style.background = activeApp.color || '#1e293b';
+            iconBox.innerHTML = getIconHtml(activeApp);
+            document.getElementById('qtyVal').innerText = buyQty;
+
+            renderSubPackages();
+            document.getElementById('prodModal').classList.add('active');
+        }
+
+        function renderSubPackages() {
+            const list = document.getElementById('modalPkgList');
+            list.innerHTML = '';
+
+            activeApp.packages.forEach((pk, idx) => {
+                const isSelected = idx === activePkgIdx;
+                const isOut = Number(pk.stock) <= 0;
+                list.innerHTML += `
+                    <div class="pkg-btn ${isSelected ? 'selected' : ''} ${isOut ? 'pkg-out' : ''}" onclick="selectSubPkg(${idx})">
+                        <div class="pkg-top">
+                            <div class="pkg-title">${pk.name}</div>
+                            <div class="pkg-price-tag">${Number(pk.price).toLocaleString()}đ</div>
+                        </div>
+                        <div class="pkg-meta">
+                            <span>📦 Kho: <b style="color:${isOut ? '#f87171' : '#34d399'}">${isOut ? 'Hết hàng (0)' : pk.stock}</b></span>
+                            <span>📊 Đã bán: <b>${pk.sold || 0}</b></span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            updateSelectedPkgDetails();
+        }
+
+        function selectSubPkg(idx) {
+            activePkgIdx = idx;
+            buyQty = 1;
+            document.getElementById('qtyVal').innerText = buyQty;
+            renderSubPackages();
+        }
+
+        function updateSelectedPkgDetails() {
+            const pk = activeApp.packages[activePkgIdx];
+            if (!pk) return;
+            const isOut = Number(pk.stock) <= 0;
+
+            document.getElementById('detPrice').innerText = Number(pk.price).toLocaleString() + ' đ';
+            document.getElementById('detStock').innerText = isOut ? '0 (Hết hàng)' : pk.stock + ' tài khoản';
+            document.getElementById('detSold').innerText = (pk.sold || 0) + ' tài khoản';
+            document.getElementById('detDesc').innerText = pk.desc || 'Bảo hành uy tín trọn thời gian sử dụng.';
+
+            const btn = document.getElementById('btnAddCartModal');
+            if (isOut) {
+                btn.disabled = true;
+                btn.innerText = '❌ Gói Này Đang Tạm Hết Hàng';
+            } else {
+                btn.disabled = false;
+                btn.innerText = `🛒 Thêm Vào Giỏ (${(pk.price * buyQty).toLocaleString()} đ)`;
+            }
+        }
+
+        function changeQty(delta) {
+            const pk = activeApp.packages[activePkgIdx];
+            if (!pk) return;
+            const maxStock = Math.max(1, Number(pk.stock));
+            buyQty = Math.min(maxStock, Math.max(1, buyQty + delta));
+            document.getElementById('qtyVal').innerText = buyQty;
+            updateSelectedPkgDetails();
+        }
+
+        function addSelectedPkgToCart() {
+            const pk = activeApp.packages[activePkgIdx];
+            if (!pk || Number(pk.stock) <= 0) return;
+
+            cart.push({
+                appName: activeApp.name,
+                pkgName: pk.name,
+                price: Number(pk.price),
+                qty: buyQty
+            });
+            updateCartBadge();
+            closeModal('prodModal');
+            openCart();
+        }
+
+        function updateCartBadge() {
+            const count = cart.reduce((s, i) => s + i.qty, 0);
+            document.getElementById('cartBadge').innerText = count;
+        }
+
+        function openCart() {
+            const box = document.getElementById('cartItems');
+            box.innerHTML = '';
+            if (cart.length === 0) {
+                box.innerHTML = `<div style="text-align:center; padding: 18px; color:#64748b; font-size:12px;">Giỏ hàng của bạn đang trống.</div>`;
+                document.getElementById('cartTotal').innerText = '0 đ';
+            } else {
+                let total = 0;
+                cart.forEach((item, idx) => {
+                    total += item.price * item.qty;
+                    box.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom: 1px solid #1e293b; font-size:11.5px;">
+                            <div style="padding-right:8px;">
+                                <div style="font-weight:700; color:#fff;">${item.appName} - ${item.pkgName}</div>
+                                <div style="color:#38bdf8;">${item.price.toLocaleString()}đ x ${item.qty} = <b>${(item.price*item.qty).toLocaleString()}đ</b></div>
+                            </div>
+                            <button onclick="removeCartItem(${idx})" style="background:transparent; border:none; color:#ef4444; font-weight:bold; cursor:pointer;">Xóa</button>
+                        </div>
+                    `;
+                });
+                document.getElementById('cartTotal').innerText = total.toLocaleString() + ' đ';
+            }
+            document.getElementById('cartModal').classList.add('active');
+        }
+
+        function removeCartItem(idx) {
+            cart.splice(idx, 1);
+            updateCartBadge();
+            openCart();
+        }
+
+        function goPayment() {
+            if (cart.length === 0) { alert('Vui lòng chọn ít nhất 1 sản phẩm!'); return; }
+            const name = document.getElementById('cusName').value.trim();
+            const phone = document.getElementById('cusPhone').value.trim();
+            const note = document.getElementById('cusNote').value.trim();
+            if (!name || !phone) { alert('Vui lòng nhập Tên và Số điện thoại Zalo/Telegram để nhận tài khoản!'); return; }
+
+            const code = 'NV' + Math.floor(10000 + Math.random() * 90000);
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            currentOrder = { code, name, phone, note, items: [...cart], total };
+
+            const qrUrl = `https://img.vietqr.io/image/${shopConfig.bankCode}-${shopConfig.accountNo}-compact2.jpg?amount=${total}&addInfo=${code}`;
+            document.getElementById('qrImg').src = qrUrl;
+            document.getElementById('payBankName').innerText = shopConfig.bankCode;
+            document.getElementById('payAccountNo').innerText = shopConfig.accountNo;
+            document.getElementById('payAccountOwner').innerText = shopConfig.accountOwner;
+            document.getElementById('payCode').innerText = code;
+            document.getElementById('payAmount').innerText = total.toLocaleString() + ' đ';
+            document.getElementById('paySyntax').innerText = code;
+
+            // Reset trạng thái hiển thị
+            document.getElementById('payStepQr').style.display = 'block';
+            document.getElementById('payStepSuccess').style.display = 'none';
+
+            closeModal('cartModal');
+            document.getElementById('payModal').classList.add('active');
+        }
+
+        // Bắn đơn về Telegram & Chuyển sang màn hình thành công (Không ép nhảy app)
+        function finishPayment() {
+            const token = "8622706147:AAGQ0io6zWiDyAFME5L8gQ9vmz_I5a6PjPA";
+            const chatId = "6582847031";
+
+            let itemsTxt = currentOrder.items.map(i => `• ${i.appName}: ${i.pkgName} (SL: ${i.qty})`).join('%0A');
+            let msg = `🔔 *ĐƠN HÀNG MỚI TỪ WEBSITE!*%0A` +
+                      `🆔 Mã đơn: *${currentOrder.code}*%0A` +
+                      `👤 Khách hàng: *${currentOrder.name}*%0A` +
+                      `📱 Zalo/Tele: *${currentOrder.phone}*%0A` +
+                      `📝 Ghi chú: ${currentOrder.note || 'Không có'}%0A` +
+                      `🛒 Chi tiết gói mua:%0A${itemsTxt}%0A` +
+                      `💰 Tổng thanh toán: *${currentOrder.total.toLocaleString()} đ*%0A` +
+                      `✅ Khách đã bấm xác nhận chuyển khoản!`;
+
+            // Bắn đơn ngầm về máy Telegram của bạn
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${msg}&parse_mode=Markdown`)
+            .catch(() => {});
+
+            // Cập nhật giao diện thành công ngay tại chỗ cho khách
+            document.getElementById('successCode').innerText = currentOrder.code;
+            document.getElementById('successPhone').innerText = currentOrder.phone;
+            
+            // Cài đặt link Zalo tùy chọn cho khách muốn nhắn trực tiếp
+            const cleanPhone = shopConfig.phone.replace(/\s+/g, '');
+            document.getElementById('btnDirectZalo').href = `https://zalo.me/${cleanPhone}`;
+
+            document.getElementById('payStepQr').style.display = 'none';
+            document.getElementById('payStepSuccess').style.display = 'block';
+
+            // Dọn giỏ hàng
+            cart = [];
+            updateCartBadge();
+        }
+
+        function openZaloModal() { document.getElementById('zaloModal').classList.add('active'); }
+
+        // ================= QUẢN TRỊ VIÊN (ADMIN) =================
+        function openAdminLogin() {
+            const inp = document.getElementById('adminPassInput');
+            inp.value = '';
+            inp.type = 'password';
+            document.getElementById('loginAdminModal').classList.add('active');
+            setTimeout(() => inp.focus(), 100);
+        }
+
+        function togglePassVisibility() {
+            const inp = document.getElementById('adminPassInput');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        }
+
+        function verifyAdminPass() {
+            const val = document.getElementById('adminPassInput').value.trim();
+            // Luôn mở được bằng mật khẩu đã lưu, HOẶC 123456, HOẶC SĐT 0859296648
+            if (val === String(adminPass).trim() || val === '123456' || val === '0859296648') {
+                closeModal('loginAdminModal');
+                openAdminDashboard();
+            } else {
+                alert('Mật khẩu không đúng! Vui lòng kiểm tra lại.');
+            }
+        }
+
+        function openAdminDashboard() {
+            document.getElementById('cfgBrandName').value = shopConfig.brandName;
+            document.getElementById('cfgBankCode').value = shopConfig.bankCode;
+            document.getElementById('cfgAccountNo').value = shopConfig.accountNo;
+            document.getElementById('cfgAccountOwner').value = shopConfig.accountOwner;
+            document.getElementById('cfgPhone').value = shopConfig.phone;
+            document.getElementById('cfgZaloQrUrl').value = shopConfig.zaloQrUrl;
+            renderAdminApps();
+            document.getElementById('adminDashboardModal').classList.add('active');
+        }
+
+        function saveShopSettings() {
+            const newPass = document.getElementById('newAdminPass').value.trim();
+            if (newPass) adminPass = newPass;
+
+            shopConfig.brandName = document.getElementById('cfgBrandName').value.trim() || 'LÊ NGUYỄN VŨ';
+            shopConfig.bankCode = document.getElementById('cfgBankCode').value.trim() || 'MB';
+            shopConfig.accountNo = document.getElementById('cfgAccountNo').value.trim() || '19396806102005';
+            shopConfig.accountOwner = document.getElementById('cfgAccountOwner').value.trim() || 'LE NGUYEN VU';
+            shopConfig.phone = document.getElementById('cfgPhone').value.trim() || '0859 296 648';
+            shopConfig.zaloQrUrl = document.getElementById('cfgZaloQrUrl').value.trim() || shopConfig.zaloQrUrl;
+
+            saveState();
+            applyShopUI();
+            document.getElementById('newAdminPass').value = '';
+            alert('✅ Đã lưu cài đặt Shop & Mật khẩu thành công!');
+        }
+
+        function addNewApplication() {
+            const name = document.getElementById('newAppName').value.trim();
+            const cat = document.getElementById('newAppCat').value;
+            const domain = document.getElementById('newAppDomain').value.trim() || 'google.com';
+            if (!name) { alert('Vui lòng nhập tên ứng dụng!'); return; }
+
+            products.unshift({
+                id: 'app_' + Date.now(),
+                name: name,
+                cat: cat,
+                domain: domain,
+                color: '#1e293b',
+                packages: [
+                    { name: `${name} Gói Chuẩn 30 Ngày - BHF`, price: 39000, stock: 50, sold: 10, desc: stdDesc(name.toUpperCase(), "30 Ngày", "Tài khoản bản quyền ổn định.") }
+                ]
+            });
+            saveState();
+            renderProducts();
+            renderAdminApps();
+            document.getElementById('newAppName').value = '';
+            alert(`✅ Đã thêm ứng dụng "${name}"!`);
+        }
+
+        function renderAdminApps() {
+            const kw = document.getElementById('adminSearchApp').value.trim().toLowerCase();
+            const box = document.getElementById('adminAppList');
+            box.innerHTML = '';
+
+            products.forEach((app, appIdx) => {
+                if (kw && !app.name.toLowerCase().includes(kw)) return;
+
+                let pkgsHtml = '';
+                app.packages.forEach((pk, pkIdx) => {
+                    pkgsHtml += `
+                        <div class="subpkg-edit-row">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                <b style="color:#38bdf8;">Gói #${pkIdx + 1}</b>
+                                <button onclick="deleteSubPkg(${appIdx}, ${pkIdx})" style="background:transparent; border:none; color:#f87171; cursor:pointer; font-size:10px;">🗑️ Xóa gói này</button>
+                            </div>
+                            <input type="text" class="form-input" id="pk-name-${appIdx}-${pkIdx}" value="${pk.name.replace(/"/g, '&quot;')}" placeholder="Tên gói con">
+                            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:6px;">
+                                <input type="number" class="form-input" id="pk-price-${appIdx}-${pkIdx}" value="${pk.price}" placeholder="Giá (VNĐ)">
+                                <input type="number" class="form-input" id="pk-stock-${appIdx}-${pkIdx}" value="${pk.stock}" placeholder="Tồn kho (0 = Hết)">
+                                <input type="number" class="form-input" id="pk-sold-${appIdx}-${pkIdx}" value="${pk.sold || 0}" placeholder="Đã bán">
+                            </div>
+                            <textarea class="form-input" id="pk-desc-${appIdx}-${pkIdx}" rows="3" placeholder="Mô tả riêng của gói này...">${pk.desc}</textarea>
+                            <button class="btn-confirm" style="padding:5px; font-size:11px;" onclick="saveSubPkg(${appIdx}, ${pkIdx})">💾 Lưu Gói #${pkIdx + 1}</button>
+                        </div>
+                    `;
+                });
+
+                box.innerHTML += `
+                    <div class="admin-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-size:13px; font-weight:800; color:#fff;">📦 ${app.name} (${app.packages.length} gói)</span>
+                            <div style="display:flex; gap:8px;">
+                                <button onclick="addSubPkg(${appIdx})" style="background:#0284c7; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:bold; cursor:pointer;">+ Thêm Gói Con</button>
+                                <button onclick="deleteApp(${appIdx})" style="background:#7f1d1d; color:#fca5a5; border:none; padding:4px 8px; border-radius:6px; font-size:10px; cursor:pointer;">Xóa App</button>
+                            </div>
+                        </div>
+                        ${pkgsHtml}
+                    </div>
+                `;
+            });
+        }
+
+        function saveSubPkg(appIdx, pkIdx) {
+            const pk = products[appIdx].packages[pkIdx];
+            pk.name = document.getElementById(`pk-name-${appIdx}-${pkIdx}`).value.trim();
+            pk.price = parseInt(document.getElementById(`pk-price-${appIdx}-${pkIdx}`).value) || 0;
+            pk.stock = parseInt(document.getElementById(`pk-stock-${appIdx}-${pkIdx}`).value) || 0;
+            pk.sold = parseInt(document.getElementById(`pk-sold-${appIdx}-${pkIdx}`).value) || 0;
+            pk.desc = document.getElementById(`pk-desc-${appIdx}-${pkIdx}`).value;
+
+            saveState();
+            renderProducts();
+            alert('✅ Đã lưu thông tin gói thành công!');
+        }
+
+        function addSubPkg(appIdx) {
+            products[appIdx].packages.push({
+                name: `[Gói Mới] ${products[appIdx].name} 30 Ngày - BHF`,
+                price: 40000,
+                stock: 50,
+                sold: 0,
+                desc: stdDesc(products[appIdx].name.toUpperCase(), "30 Ngày", "Mô tả chi tiết quyền lợi gói.")
+            });
+            saveState();
+            renderProducts();
+            renderAdminApps();
+        }
+
+        function deleteSubPkg(appIdx, pkIdx) {
+            if (products[appIdx].packages.length <= 1) {
+                alert('Mỗi ứng dụng cần có ít nhất 1 gói! Nếu muốn xóa hẳn hãy bấm Xóa App.');
+                return;
+            }
+            if (confirm('Xóa gói con này?')) {
+                products[appIdx].packages.splice(pkIdx, 1);
+                saveState();
+                renderProducts();
+                renderAdminApps();
+            }
+        }
+
+        function deleteApp(appIdx) {
+            if (confirm(`Bạn có chắc muốn xóa toàn bộ ứng dụng "${products[appIdx].name}"?`)) {
+                products.splice(appIdx, 1);
+                saveState();
+                renderProducts();
+                renderAdminApps();
+            }
+        }
+
+        function exportUpdatedHtmlFile() {
+            const dataScript = document.getElementById('appDataScript');
+            dataScript.innerHTML = `\nwindow.DEFAULT_ADMIN_PASS = ${JSON.stringify(adminPass)};\nwindow.DEFAULT_SHOP_CONFIG = ${JSON.stringify(shopConfig, null, 2)};\nfunction stdDesc(title, time, note) { return \`✨ \${title} | BHF\\n📌 THÔNG TIN:\\n• Thời hạn sử dụng: \${time}.\\n• \${note}\\n🛡️ BẢO HÀNH:\\n• Bảo hành Full thời gian (\${time}) 1 đổi 1 nếu lỗi.\`; }\nwindow.DEFAULT_PRODUCTS = ${JSON.stringify(products, null, 2)};\n`;
+
+            closeModal('adminDashboardModal');
+            const fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "index.html";
+            a.click();
+        }
+
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        // Khởi động hệ thống
+        applyShopUI();
+        renderProducts();
+    </script>
+</body>
+</html>
